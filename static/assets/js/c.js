@@ -1,5 +1,4 @@
 let appInd;
-const g = window.location.pathname === "/up";
 const a = window.location.pathname === "/yz";
 const c = window.location.pathname === "/gt";
 
@@ -92,9 +91,7 @@ function getSelected(links) {
 
 function CustomApp(customApp) {
   let apps;
-  if (g) {
-    apps = localStorage.getItem("Gcustom");
-  } else if (c) {
+  if (c) {
     apps = localStorage.getItem("Tcustom");
   } else if (a) {
     apps = localStorage.getItem("Acustom");
@@ -110,9 +107,7 @@ function CustomApp(customApp) {
 
   apps[key] = customApp;
 
-  if (g) {
-    localStorage.setItem("Gcustom", JSON.stringify(apps));
-  } else if (c) {
+  if (c) {
     localStorage.setItem("Tcustom", JSON.stringify(apps));
   } else if (a) {
     localStorage.setItem("Acustom", JSON.stringify(apps));
@@ -121,9 +116,7 @@ function CustomApp(customApp) {
 
 function setPin(index) {
   let pins;
-  if (g) {
-    pins = localStorage.getItem("Gpinned");
-  } else if (c) {
+  if (c) {
     pins = localStorage.getItem("Tpinned");
   } else if (a) {
     pins = localStorage.getItem("Apinned");
@@ -140,9 +133,7 @@ function setPin(index) {
   } else {
     pins.push(index);
   }
-  if (g) {
-    localStorage.setItem("Gpinned", pins);
-  } else if (c) {
+  if (c) {
     localStorage.setItem("Tpinned", pins);
   } else if (a) {
     localStorage.setItem("Apinned", pins);
@@ -167,9 +158,8 @@ function Custom(app) {
   const link = prompt("Enter link for the app:");
   if (title && link) {
     const customApp = {
-      name: `[Custom] ${title}`,
+      name: `${title}`,
       link: link,
-      image: "/assets/media/icons/custom.webp",
       custom: false,
     };
 
@@ -181,7 +171,6 @@ function Custom(app) {
 function CreateCustomApp(customApp) {
   const columnDiv = document.createElement("div");
   columnDiv.classList.add("column");
-  columnDiv.setAttribute("data-category", "all");
 
   const pinIcon = document.createElement("i");
   pinIcon.classList.add("fa", "fa-map-pin");
@@ -207,19 +196,12 @@ function CreateCustomApp(customApp) {
     handleClick(customApp);
   };
 
-  const image = document.createElement("img");
-  image.width = 145;
-  image.height = 145;
-  image.src = customApp.image;
-  image.loading = "lazy";
 
   const paragraph = document.createElement("p");
 
   for (const span of Span(customApp.name)) {
     paragraph.appendChild(span);
   }
-
-  linkElem.appendChild(image);
   linkElem.appendChild(paragraph);
   columnDiv.appendChild(linkElem);
   columnDiv.appendChild(btn);
@@ -230,9 +212,7 @@ function CreateCustomApp(customApp) {
 
 document.addEventListener("DOMContentLoaded", () => {
   let storedApps;
-  if (g) {
-    storedApps = JSON.parse(localStorage.getItem("Gcustom"));
-  } else if (c) {
+  if (c) {
     storedApps = JSON.parse(localStorage.getItem("Tcustom"));
   } else if (a) {
     storedApps = JSON.parse(localStorage.getItem("Acustom"));
@@ -245,12 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 let path = "/assets/json/a.min.json";
-if (g) {
-  path = "/assets/json/g.min.json";
-} else if (c) {
+if (c) {
   path = "/assets/json/t.min.json";
-} else if (a) {
-  path = "/assets/json/a.min.json";
 }
 fetch(path)
   .then(response => {
@@ -258,10 +234,10 @@ fetch(path)
   })
   .then(appsList => {
     appsList.sort((a, b) => {
-      if (a.name.startsWith("[Custom]")) {
+      if (a.custom) {
         return -1;
       }
-      if (b.name.startsWith("[Custom]")) {
+      if (b.custom) {
         return 1;
       }
       return a.name.localeCompare(b.name);
@@ -269,9 +245,7 @@ fetch(path)
     const nonPinnedApps = document.querySelector(".apps");
     const pinnedApps = document.querySelector(".pinned");
     let pinList;
-    if (g) {
-      pinList = localStorage.getItem("Gpinned") || "";
-    } else if (a) {
+    if (a) {
       pinList = localStorage.getItem("Apinned") || "";
     } else if (c) {
       pinList = localStorage.getItem("Tpinned") || "";
@@ -280,28 +254,11 @@ fetch(path)
     appInd = 0;
 
     for (const app of appsList) {
-      if (app.categories?.includes("local")) {
-        app.local = true;
-      } else if (
-        app.link &&
-        (app.link.includes("now.gg") || app.link.includes("nowgg.me"))
-      ) {
-        if (app.partial === null || app.partial === undefined) {
-          app.partial = true;
-          app.say = "Now.gg is currently not working for some users.";
-        }
-      } else if (app.link?.includes("nowgg.nl")) {
-        if (app.error === null || app.error === undefined) {
-          app.error = true;
-          app.say = "NowGG.nl is currently down.";
-        }
-      }
 
       const pinNum = appInd;
 
       const columnDiv = document.createElement("div");
       columnDiv.classList.add("column");
-      columnDiv.setAttribute("data-category", app.categories.join(" "));
 
       const pinIcon = document.createElement("i");
       pinIcon.classList.add("fa", "fa-map-pin");
@@ -314,7 +271,6 @@ fetch(path)
       btn.style.borderRadius = "50%";
       btn.style.borderColor = "transparent";
       btn.style.color = "white";
-      btn.style.top = "-200px";
       btn.style.position = "relative";
       btn.onclick = () => {
         setPin(pinNum);
@@ -327,42 +283,15 @@ fetch(path)
         handleClick(app);
       };
 
-      const image = document.createElement("img");
-      image.width = 145;
-      image.height = 145;
-      image.loading = "lazy";
-
-      if (app.image) {
-        image.src = app.image;
-      } else {
-        image.style.display = "none";
-      }
-
       const paragraph = document.createElement("p");
 
       for (const span of Span(app.name)) {
         paragraph.appendChild(span);
       }
 
-      if (app.error) {
-        paragraph.style.color = "red";
-        if (!app.say) {
-          app.say = "This app is currently not working.";
-        }
-      } else if (app.load) {
-        paragraph.style.color = "yellow";
-        if (!app.say) {
-          app.say = "This app may experience excessive loading times.";
-        }
-      } else if (app.partial) {
-        paragraph.style.color = "yellow";
-        if (!app.say) {
-          app.say =
-            "This app is currently experiencing some issues, it may not work for you. (Dynamic doesn't work in about:blank)";
-        }
-      }
+      
+      
 
-      link.appendChild(image);
       link.appendChild(paragraph);
       columnDiv.appendChild(link);
 
@@ -390,25 +319,7 @@ fetch(path)
     console.error("Error fetching JSON data:", error);
   });
 
-function category() {
-  const selectedCategories = Array.from(
-    document.querySelectorAll("#category option:checked"),
-  ).map(option => option.value);
-  const g = document.getElementsByClassName("column");
 
-  for (const game of g) {
-    const categories = game.getAttribute("data-category").split(" ");
-
-    if (
-      selectedCategories.length === 0 ||
-      selectedCategories.some(category => categories.includes(category))
-    ) {
-      game.style.display = "block";
-    } else {
-      game.style.display = "none";
-    }
-  }
-}
 
 function bar() {
   const input = document.getElementById("search");
