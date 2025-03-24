@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     "None": {
       name: "Interstellar",
-      icon: "/assets/media/favicon/main.ico"
+      icon: "/assets/media/favicon/favicon.png",
     },
   };
 
