@@ -4,7 +4,7 @@ try {
   qp = window.top.location.pathname === "/rx";
 } catch {
   try {
-    qp = window.parent.location.pathname === "/rx";   
+    qp = window.parent.location.pathname === "/rx";
   } catch {
     qp = false;
   }
@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: "Big Ideas Math",
       icon: "/assets/media/favicon/bim.ico",
     },
-    "None": {
+    None: {
       name: "Interstellar",
       icon: "/assets/media/favicon/favicon.png",
     },

@@ -8,7 +8,7 @@ try {
   t = window.top.location.pathname === "/rx";
 } catch {
   try {
-    t = window.parent.location.pathname === "/rx";   
+    t = window.parent.location.pathname === "/rx";
   } catch {
     t = false;
   }
@@ -196,7 +196,6 @@ function CreateCustomApp(customApp) {
     handleClick(customApp);
   };
 
-
   const paragraph = document.createElement("p");
 
   for (const span of Span(customApp.name)) {
@@ -254,7 +253,6 @@ fetch(path)
     appInd = 0;
 
     for (const app of appsList) {
-
       const pinNum = appInd;
 
       const columnDiv = document.createElement("div");
@@ -289,9 +287,6 @@ fetch(path)
         paragraph.appendChild(span);
       }
 
-      
-      
-
       link.appendChild(paragraph);
       columnDiv.appendChild(link);
 
@@ -318,8 +313,6 @@ fetch(path)
   .catch(error => {
     console.error("Error fetching JSON data:", error);
   });
-
-
 
 function bar() {
   const input = document.getElementById("search");

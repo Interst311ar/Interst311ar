@@ -23,9 +23,7 @@ const cache = new Map();
 const CACHE_TTL = 30 * 24 * 60 * 60 * 1000; // Cache for 30 Days
 
 if (config.challenge !== false) {
-  console.log(
-    chalk.green("Password protection enabled. Please login."),
-  );
+  console.log(chalk.green("Password protection enabled. Please login."));
   // biome-ignore lint/complexity/noForEach:
   Object.entries(config.users).forEach(([username, password]) => {
     console.log(chalk.blue(`Username: ${username}, Password: ${password}`));

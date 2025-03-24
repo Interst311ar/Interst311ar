@@ -10,7 +10,7 @@ try {
   xl = window.top.location.pathname === "/rx";
 } catch {
   try {
-    xl = window.parent.location.pathname === "/rx";   
+    xl = window.parent.location.pathname === "/rx";
   } catch {
     xl = false;
   }
