@@ -15,7 +15,7 @@ if (
   setTimeout(() => {
     if (!popup || popup.closed) {
       alert(
-        "Please allow popups for this site. Doing so will allow us to open the site in a about:blank tab and preventing this site from showing up in your history. You can turn this off in the site settings.",
+        "Please allow popups for this site. Doing so will allow us to cloak the site in a about:blank tab and preventing this site from showing up in your history. You can turn this off in the site settings.",
       );
     } else {
       const doc = popup.document;
@@ -184,9 +184,10 @@ const SplashT = [
   "Subscribe to my Youtube (@xbubbo)",
   "Check out the settings page",
   "Check out our Patreon (https://www.patreon.com/gointerstellar)",
+  "Pineapples don't belong on pizza!", // secret
 ];
 
-let SplashI = Math.floor(Math.random() * SplashT.length);
+let SplashI = Math.floor(Math.random() * (SplashT.length-0.99));
 const SplashE = document.getElementById("splash");
 
 function US() {
